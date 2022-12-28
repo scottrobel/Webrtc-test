@@ -19,6 +19,20 @@
     integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
+    const servers = {
+      iceServers: [
+        { url: "stun:stun.l.google.com:19302" },
+        { url: "stun:stun1.l.google.com:19302" },
+        { url: "stun:stun2.l.google.com:19302" },
+        { url: "stun:stun3.l.google.com:19302" },
+        { url: "stun:stun4.l.google.com:19302" },
+        {
+          url: "turn:YOURTURNSERVER.com",
+          credential: "CREDENTIAL",
+          username: "USERNAME",
+        },
+      ],
+    };
     let userMediaPromise = navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
@@ -36,6 +50,7 @@
               initiator: false,
               trickle: false,
               stream: media,
+              config: servers
             });
             let offerIds = Object.keys(offers["data"]);
             let lastOfferId = offerIds[offerIds.length - 1];
@@ -58,6 +73,7 @@
               initiator: true,
               trickle: false,
               stream: media,
+              config: servers
             });
             peer.on("signal", (data) => {
               axios
